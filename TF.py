@@ -18,7 +18,7 @@ file_name = 'training_data.npy'
 
 if os.path.isfile(file_name):
     print('File exists, loading previous data!')
-    training_data = list(np.load(file_name))
+    training_data = list(np.load(file_name, allow_pickle=True))
 else:
     print('File does not exist, creating a new one!')
     training_data = []
@@ -30,12 +30,14 @@ def main():
 
     last_time = time.time()
     while True:
+        global training_data
         screen = grab_screen(region=(0,0,1920,1080))
+        screen = cv2.resize(screen, (1280, 720))
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
         keys = key_check()
         output = keys_to_output(keys)
         training_data.append([screen, output])
-        print(f'Frame took {time.time()-last_time} seconds')
+        #print(f'Frame took {time.time()-last_time} seconds')
         last_time = time.time()
 
         if 'S' in keys:
@@ -46,5 +48,15 @@ def main():
         if 'R' in keys:
             print('Reseting training data!')
             training_data = []
+
+        if 'Q' in keys:
+            print('Quitting with saving!')
+            np.save(file_name, training_data)
+            break
+
+        if 'Z' in keys:
+            print('Quitting without saving!')
+            training_data = []
+            break
 
 main()
