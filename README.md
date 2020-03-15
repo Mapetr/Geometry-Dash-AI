@@ -9,3 +9,12 @@ Install additional packages with pip in command line. Use this to install everyt
 
 # How to use
 Its now set default to make training data. In future there will be setting to set something else.
+
+# Controls
+S = Saves the data buffer to the file (press when you complete a level)
+R = Resets the data buffer (press when you die, so we dont train the AI dying)
+Q = Quits the training program with saving the data buffer to the file
+Z = Quits the training program without saving
+
+# TO-DO
+Implement Left-click mouse button support for training
