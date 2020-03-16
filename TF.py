@@ -4,14 +4,17 @@ import time
 from grab_screen import grab_screen
 from getkeys import key_check
 import os
+import mouse
 
 def keys_to_output(keys):
     #[SPACE]
     output = [0]
-    if 'SPACE' in keys:
-        output[0] = [1]
+    if 'SPACE' in keys or mouse.is_pressed("left"):
+        output = 1
     else:
-        output[0] = [0]
+        output = 0
+
+    print(output)
     return output
 
 file_name = 'training_data.npy'
@@ -32,7 +35,7 @@ def main():
     while True:
         global training_data
         screen = grab_screen(region=(0,0,1920,1080))
-        screen = cv2.resize(screen, (1280, 720))
+        screen = cv2.resize(screen, (960, 540))
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
         keys = key_check()
         output = keys_to_output(keys)
@@ -43,7 +46,10 @@ def main():
         if 'S' in keys:
             print('Saving training data!')
             print(len(training_data))
+            print('Please wait...')
             np.save(file_name, training_data)
+            time.sleep(1)
+            print('Saved!')
 
         if 'R' in keys:
             print('Reseting training data!')
@@ -51,7 +57,10 @@ def main():
 
         if 'Q' in keys:
             print('Quitting with saving!')
+            print('Please wait...')
             np.save(file_name, training_data)
+            time.sleep(1)
+            print('Saved!')
             break
 
         if 'Z' in keys:
