@@ -8,13 +8,12 @@ import mouse
 
 def keys_to_output(keys):
     #[SPACE]
-    output = [0]
+    output = [0,0]
     if 'SPACE' in keys or mouse.is_pressed("left"):
-        output = 1
+        output = [0,1]
     else:
-        output = 0
+        output = [1,0]
 
-    print(output)
     return output
 
 file_name = 'training_data.npy'
@@ -35,7 +34,7 @@ def main():
     while True:
         global training_data
         screen = grab_screen(region=(0,0,1920,1080))
-        screen = cv2.resize(screen, (960, 540))
+        screen = cv2.resize(screen, (160, 120))
         screen = cv2.cvtColor(screen, cv2.COLOR_BGR2RGB)
         keys = key_check()
         output = keys_to_output(keys)
@@ -48,12 +47,12 @@ def main():
             print(len(training_data))
             print('Please wait...')
             np.save(file_name, training_data)
-            time.sleep(1)
             print('Saved!')
 
         if 'R' in keys:
             print('Reseting training data!')
             training_data = []
+            training_data = list(np.load(file_name, allow_pickle=True))
 
         if 'Q' in keys:
             print('Quitting with saving!')
