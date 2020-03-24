@@ -61,11 +61,13 @@ def main(file_name, starting_value):
             print(len(training_data))
             print('Please wait...')
             np.save(file_name, training_data)
+            training_data = list(np.load(file_name, allow_pickle=True))
             print('Saved!')
 
         if 'R' in keys:
             print('Reseting training data!')
             training_data = []
+            np.save(file_name, training_data)
             training_data = list(np.load(file_name, allow_pickle=True))
 
         if 'Q' in keys:
